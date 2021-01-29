@@ -1,0 +1,22 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    //"python.linting.pylintArgs": [
+    //    "--ignored-modules=tensorflow",
+    //    "--extension-pkg-whitelist=tensorflow"
+    //]
+    "python.linting.pylintArgs": [
+        "--ignored-modules=sqlite3",
+        "--extension-pkg-whitelist=sqlite3",
+        "--load-plugins", "pylint_flask_sqlalchemy, pylint_sqlalchemy"
+    ],
+    "python.pythonPath": "D:\\ProgramFiles\\Python\\Anaconda3\\envs\\sbcapstone\\python.exe",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s", "./tests",
+        "-p", "*test*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": true,
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Stock Seasonality</title>    
+        <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css') }}"/>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <style>
+            .collapsible {
+              background-color: #777;
+              color: white;
+              cursor: pointer;
+              padding: 18px;
+              width: 100%;
+              border: none;
+              text-align: left;
+              outline: none;
+              font-size: 15px;
+            }
+            
+            .active, .collapsible:hover {
+              background-color: #555;
+            }
+            
+            .collapsible:after {
+              content: '\002B';
+              color: white;
+              font-weight: bold;
+              float: right;
+              margin-left: 5px;
+            }
+            
+            .active:after {
+              content: "\2212";
+            }
+            
+            .content {
+              padding: 0 18px;
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.2s ease-out;
+              background-color: #f1f1f1;
+            }
+        </style>
+    </head>
+    <body>
+    <h1>Welcome !!!</h1>
+    <h2>Please enter the name of the stock for which you want to check Seasonality:</h2>
+    <form class="form-inline">
+        <div class="form-group">
+            {{form.stockpicker(class="form-control")}}            
+        </div> 
+        <button type="submit" class="btn btn-info">Submit</button>
+    </form>
+    <div id="result"></div>  
+    <p></p>
+    <button class="collapsible" id="btnprice">Historical Stock Price</button>
+    <div class="content" id="price"></div>
+    <p></p>
+    <button class="collapsible" id="btnpast">Past Seasonality</button>
+    <div class="content" id="past"></div>
+    <p></p>
+    <button class="collapsible" id="btnpred">Predicted Seasonality</button>
+    <div class="content" id="pred"></div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            } 
+          });
+        }
+
+        $(document).ready(function(){
+            var stocks=[];
+            function loadstocks(){
+                $.getJSON('/stocks', function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++ ) {
+                        stocks.push(data[i].stockName);
+                    }
+                });
+            };
+            loadstocks();
+            
+            $('#stockpicker').autocomplete({
+                source: stocks, minLength: 2 
+            }); 
+
+            // Overrides the default autocomplete filter function to search only from the beginning of the string
+            /*$.ui.autocomplete.filter = function (array, term) {
+                var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+                return $.grep(array, function (value) {
+                    return matcher.test(value.label || value.value || value);
+                });
+            };*/
+            
+            $('form').on('submit', function(e){
+                $.ajax({
+                    data: {
+                        stock:$('#stockpicker').val()
+                    },
+                    type: 'POST',
+                    url : '/process'
+                })
+                .done(function(data){ 
+                    if (data.error){
+                        $('#result').html(data.error).show();                        
+                    }
+                    else {
+                        //$('#result').html(data.stock).show();   
+                        //$('#result').html("Completed").show();      
+                        $('#result').html(data.overall).show(); 
+                        $('#price').html(data.price).show();
+                        $('#past').html(data.past).show();     
+                        $('#pred').html(data.pred).show();       
+                    }
+                })
+                e.preventDefault();
+            });
+        }); 
+    </script>
+    </body>
+</html>

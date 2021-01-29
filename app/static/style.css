@@ -1,0 +1,53 @@
+.form-control {
+    display: block;
+    width:500px; /*Width of the search control*/
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+.btn {
+        padding: .375rem .75rem; 
+        margin-top:10px;
+    }
+
+.dataframe, .dataframe th, .dataframe td {
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align: left;
+    padding: 2px 5px;
+    margin-bottom: 40px;
+    font-size: 0.9em;
+    }
+.all th {
+    background-color: rgb(58, 58, 145);
+    color: white;
+}
+.best th {
+    background-color: rgb(63, 197, 241);
+    color: white;
+}
+
+tr:nth-child(odd)	{ background-color:#eee; }
+tr:nth-child(even)	{ background-color:#fff; }
+tr:hover            { background-color: #ffff99;}
+
+.cv tr:nth-child(1) {
+    background-color: yellow;
+}
+
+img.ploto {
+    height: 70%;
+    width: 70%;
+  }
+  
+img.plotd {
+    height: 70%;
+    width: 70%;
+}
